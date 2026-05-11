@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 228 17% 13%;
+    --card-foreground: 0 0% 100%;
+    --popover: 228 17% 13%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 239 73% 66%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 228 17% 13%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 228 17% 13%;
+    --muted-foreground: 0 0% 50%;
+    --accent: 239 73% 66%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 100% / 0.1;
+    --input: 0 0% 100% / 0.1;
+    --ring: 239 73% 66%;
+    --radius: 0.625rem;
+  }
+
+  body {
+    @apply bg-black text-white;
+    font-family: 'Funnel Display', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .dual-wave-container {
+    display: inline-flex;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .dual-wave-char {
+    display: inline-block;
+    transition: transform 1s cubic-bezier(0.33, 1, 0.68, 1);
+    white-space: pre;
+  }
+
+  .dual-wave-container:hover .dual-wave-char {
+    transform: translateY(calc(sin(var(--char-index) * 1.5) * 0.5em));
+  }
+
+  @supports (animation-timeline: scroll()) and (animation-range: 0% 100%) {
+    .dual-wave-char {
+      animation: dual-wave-both 2.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+      animation-play-state: paused;
+      transform: none;
+      animation-delay: calc(var(--char-index) * 0.03s * -1);
+      transition: none;
+    }
+
+    .dual-wave-container:hover .dual-wave-char {
+      animation-play-state: running;
+    }
+  }
+
+  @keyframes dual-wave-both {
+    0% {
+      transform: translateY(calc(cos(var(--char-index) * 1.5) * 0.25em));
+    }
+    100% {
+      transform: translateY(calc(sin(var(--char-index) * 1.5) * 0.5em));
+    }
+  }
+
+  @keyframes ripple-effect {
+    0% {
+      transform: scale(0);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(100, 102, 233, 0.4);
+    animation: ripple-effect 0.6s ease-out forwards;
+    pointer-events: none;
+  }
+}
